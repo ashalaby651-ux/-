@@ -65,9 +65,9 @@
         }
         th, td {
             border: 1px solid #ddd;
-            padding: 10px;
+            padding: 8px;
             text-align: center;
-            font-size: 14px;
+            font-size: 13px;
         }
         th {
             background-color: #007bff;
@@ -77,7 +77,7 @@
             background-color: #dc3545;
             color: white;
             border: none;
-            padding: 5px 10px;
+            padding: 5px 8px;
             border-radius: 3px;
             cursor: pointer;
         }
@@ -119,6 +119,7 @@
                 <th>البيان</th>
                 <th>المبلغ</th>
                 <th>التصنيف</th>
+                <th>التاريخ</th>
                 <th>حذف</th>
             </tr>
         </thead>
@@ -145,14 +146,19 @@
             return;
         }
 
+        // الحصول على التاريخ والوقت الحالي بتنسيق جميل
+        const now = new Date();
+        const dateString = now.toLocaleDateString('ar-EG') + ' ' + now.toLocaleTimeString('ar-EG', {hour: '2-digit', minute:'2-digit'});
+
         const expense = {
             id: Date.now(),
             title: title,
             amount: amount,
-            category: category
+            category: category,
+            date: dateString
         };
 
-        expenses.push(expense);
+        expenses.unshift(expense); // إضافة المصروف الجديد في أعلى القائمة
         document.getElementById('title').value = '';
         document.getElementById('amount').value = '';
         
@@ -176,6 +182,7 @@
                 <td>${exp.title}</td>
                 <td>${exp.amount.toFixed(2)}</td>
                 <td>${exp.category}</td>
+                <td>${exp.date || 'بدون تاريخ'}</td>
                 <td><button class="delete-btn" onclick="deleteExpense(${exp.id})">حذف</button></td>
             `;
             tableBody.appendChild(row);
